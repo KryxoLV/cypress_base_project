@@ -4,6 +4,7 @@ import RadioButtonPage from "../../pageObjects/radioButtonPage";
 import webTablePage from "../../pageObjects/webTablePage";
 import buttonPage from "../../pageObjects/buttonPage";
 import LinkPage from "../../pageObjects/linksPage";
+import SelectablePage from "../../pageObjects/SelectablePage"
 
 context("Elements Page", () => {
   context("Text box scenarios", () => {
@@ -170,7 +171,7 @@ context("Elements Page", () => {
       LinkPage.visit();
     });
 
-    it.only("links", () => {
+    it("links", () => {
     cy.intercept('GET', 'created').as('getCreated');
     LinkPage.clickCreated.click();
     cy.wait('@getCreated').then(data => {expect(data.response.statusCode).to.eq(201)})
@@ -182,6 +183,46 @@ context("Elements Page", () => {
 
     });  
   });
+
+  context("selectable page scenarios ", () => {
+    beforeEach(() => {
+      SelectablePage.visit();
+    });
+
+    it("LIST Noklikot uz laukiem “Cras justo odio” un “Morbi leo risus”. ", () => {
+      SelectablePage.CrasJustoOdio.click();
+      SelectablePage.MorbiLeoRisus.click();
+      /// Tiek parbaudiits vai klase ir mainiijusies. Ja ir piespiesta poga, tad klase tiek mainiita uz active, ja nee, tad paliek bez active atribuuta 
+      /// Taapeec tiek paarbaudiita klase validaacijaa
+      SelectablePage.CrasJustoOdio.should('have.class', 'mt-2 list-group-item active list-group-item-action');
+      SelectablePage.MorbiLeoRisus.should('have.class', 'mt-2 list-group-item active list-group-item-action');
+      SelectablePage.PortaAcConsecteturAc.should('have.class', 'mt-2 list-group-item list-group-item-action');
+      SelectablePage.DapibusAcFacilisisIn.should('have.class', 'mt-2 list-group-item list-group-item-action');
+
+    }); 
+    
+    
+    it.only("GRID", () => {
+      SelectablePage.gridClick.click();
+      SelectablePage.ClickOnTwo.click();
+      SelectablePage.ClickOnFour.click();
+      SelectablePage.ClickOnSix.click();
+      SelectablePage.ClickOnEight.click();
+      ///Validaacija ir identiska kaa pagashreiz
+      ///Katra aktiivaa elementa klase tiek mainiita uz active, ja nav aktiivs elements tad klase nemainaas un paliek default
+      ///Tapeec validaacija atkal balstaas uz katras pogas piederiibu noteiktai klasei
+      SelectablePage.ClickOnTwo.should('have.class', 'list-group-item active list-group-item-action');
+      SelectablePage.ClickOnFour.should('have.class', 'list-group-item active list-group-item-action');
+      SelectablePage.ClickOnSix.should('have.class', 'list-group-item active list-group-item-action');
+      SelectablePage.ClickOnEight.should('have.class', 'list-group-item active list-group-item-action');
+      SelectablePage.GridNrOne.should('have.class', 'list-group-item list-group-item-action');
+      SelectablePage.GridNrThree.should('have.class', 'list-group-item list-group-item-action');
+      SelectablePage.GridNrFive.should('have.class', 'list-group-item list-group-item-action');
+      SelectablePage.GridNrSeven.should('have.class', 'list-group-item list-group-item-action');
+      SelectablePage.GridNrNine.should('have.class', 'list-group-item list-group-item-action');
+
+    });
+    });
   
 
 
